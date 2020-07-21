@@ -17,6 +17,7 @@ const (
 	ContainerType   DiscoveredEntityType = "Container"
 	ApplicationType DiscoveredEntityType = "Application"
 	ServiceType     DiscoveredEntityType = "Service"
+	VolumeType      DiscoveredEntityType = "Volume"
 )
 
 const (
@@ -33,6 +34,7 @@ const (
 	Transaction        ResourceType = "Transaction"
 	NumPods            ResourceType = "NumPods"
 	VStorage           ResourceType = "VStorage"
+	StorageAmount      ResourceType = "StorageAmount"
 
 	Access       ResourceType = "Access"
 	Cluster      ResourceType = "Cluster"

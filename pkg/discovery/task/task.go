@@ -19,6 +19,8 @@ type Task struct {
 
 	nodeList []*api.Node
 	podList  []*api.Pod
+	pvList   []*api.PersistentVolume
+	pvcList  []*api.PersistentVolumeClaim
 	cluster  *repository.ClusterSummary
 }
 
@@ -41,6 +43,18 @@ func (t *Task) WithPods(podList []*api.Pod) *Task {
 	return t
 }
 
+// Assign pvs to the task.
+func (t *Task) WithPVs(pvList []*api.PersistentVolume) *Task {
+	t.pvList = pvList
+	return t
+}
+
+// Assign pvcs to the task.
+func (t *Task) WithPVCs(pvcList []*api.PersistentVolumeClaim) *Task {
+	t.pvcList = pvcList
+	return t
+}
+
 // Assign cluster summary to the task.
 func (t *Task) WithCluster(cluster *repository.ClusterSummary) *Task {
 	t.cluster = cluster
@@ -55,6 +69,16 @@ func (t *Task) NodeList() []*api.Node {
 // Get pod list from the task.
 func (t *Task) PodList() []*api.Pod {
 	return t.podList
+}
+
+// Get PV list from the task.
+func (t *Task) PVList() []*api.PersistentVolume {
+	return t.pvList
+}
+
+// Get PVC list from the task.
+func (t *Task) PVCList() []*api.PersistentVolumeClaim {
+	return t.pvcList
 }
 
 func (t *Task) Cluster() *repository.ClusterSummary {
@@ -75,6 +99,7 @@ type TaskResult struct {
 	podEntities      []*repository.KubePod
 	kubeControllers  []*repository.KubeController
 	containerSpecs   []*repository.ContainerSpec
+	podVolumeMetrics []*repository.PodVolumeMetrics
 }
 
 func NewTaskResult(workerID string, state TaskResultState) *TaskResult {
@@ -116,6 +141,10 @@ func (r *TaskResult) ContainerSpecs() []*repository.ContainerSpec {
 	return r.containerSpecs
 }
 
+func (r *TaskResult) PodVolumeMetrics() []*repository.PodVolumeMetrics {
+	return r.podVolumeMetrics
+}
+
 func (r *TaskResult) Err() error {
 	return r.err
 }
@@ -152,5 +181,10 @@ func (r *TaskResult) WithKubeControllers(kubeControllers []*repository.KubeContr
 
 func (r *TaskResult) WithContainerSpecs(containerSpecs []*repository.ContainerSpec) *TaskResult {
 	r.containerSpecs = containerSpecs
+	return r
+}
+
+func (r *TaskResult) WithPodVolumeMetrics(podVolumeMetrics []*repository.PodVolumeMetrics) *TaskResult {
+	r.podVolumeMetrics = podVolumeMetrics
 	return r
 }
